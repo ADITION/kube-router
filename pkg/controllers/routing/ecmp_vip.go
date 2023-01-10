@@ -6,6 +6,7 @@ import (
 	"fmt"
 	"strconv"
 
+	"github.com/cloudnativelabs/kube-router/pkg/metrics"
 	"github.com/cloudnativelabs/kube-router/pkg/utils"
 
 	"strings"
@@ -48,6 +49,10 @@ func (nrc *NetworkRoutingController) bgpAdvertiseVIP(vip string) error {
 		},
 	})
 
+	if nrc.MetricsEnabled {
+		metrics.ControllerBGPadvertisementsSent.WithLabelValues("advertise-vip").Inc()
+	}
+
 	return err
 }
 
@@ -79,6 +84,10 @@ func (nrc *NetworkRoutingController) bgpWithdrawVIP(vip string) error {
 		TableType: gobgpapi.TableType_GLOBAL,
 		Path:      &path,
 	})
+
+	if nrc.MetricsEnabled {
+		metrics.ControllerBGPadvertisementsSent.WithLabelValues("withdraw-vip").Inc()
+	}
 
 	return err
 }

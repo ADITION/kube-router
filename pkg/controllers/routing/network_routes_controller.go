@@ -467,7 +467,7 @@ func (nrc *NetworkRoutingController) watchBgpUpdates() {
 
 func (nrc *NetworkRoutingController) advertisePodRoute() error {
 	if nrc.MetricsEnabled {
-		metrics.ControllerBGPadvertisementsSent.Inc()
+		metrics.ControllerBGPadvertisementsSent.WithLabelValues("pod-route").Inc()
 	}
 
 	cidrStr := strings.Split(nrc.podCidr, "/")
